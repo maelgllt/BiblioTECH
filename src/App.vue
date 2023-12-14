@@ -1,41 +1,55 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-
-const books = ref([]);
-const fetchBooks = async () => {
-  try {
-    const response = await axios.get('http://localhost/api_BiblioTech.php');
-    books.value = response.data;
-  } catch (error){
-    console.log('Erreur lors de la récupération des données de l\'API', error);
-  }
-};
-
-onMounted(fetchBooks);
-
-</script>
-
 <template>
-  <div>
-    <h1>Bienvenue sur BiblioTech, l'application de gestion de la médiathèque de la ville de Saint-Barthélemy-d'Anjou</h1>
-    <ul v-for="book in books" :key="book.id">
-      <p id="p1">
-        <strong>Livre</strong> {{ book.cote_livres }}
-      </p>
-      <li>
-        <strong>Titre : </strong> {{ book.titre }}
-      </li>
-      <li>
-        <strong>Auteur(s) : </strong> {{ book.auteur }}
-      </li>
-    </ul>
+  <div class="app">
+    <Sidebar />
+
+    <router-view />
   </div>
-  
 </template>
 
-<style>
-#p1{
-  text-decoration: underline;
+<script setup>
+import Sidebar from './components/Sidebar.vue'
+</script>
+
+<style lang="scss">
+:root {
+	--primary: #7e4ade;
+	--primary-alt: #2232c5;
+	--grey: #64748b;
+	--dark: #1e293b;
+	--dark-alt: #334155;
+	--light: #f1f5f9;
+	--sidebar-width: 300px;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Fira sans', sans-serif;
+}
+
+body {
+	background: var(--light);
+}
+
+button {
+	cursor: pointer;
+	appearance: none;
+	border: none;
+	outline: none;
+	background: none;
+}
+
+.app {
+	display: flex;
+
+	main {
+		flex: 1 1 0;
+		padding: 2rem;
+
+		@media (max-width: 1024px) {
+			padding-left: 6rem;
+		}
+	}
 }
 </style>
