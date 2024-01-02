@@ -13,6 +13,9 @@
             <p class="book-author">
               <strong>Auteur(s) : </strong> {{ book.auteur }}
             </p>
+            <p class="book-id">
+              <strong>Côte : </strong> {{ book.cote_livres }}
+            </p>
           </div>
         </div>
       </div>
