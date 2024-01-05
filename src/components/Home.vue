@@ -19,11 +19,31 @@
           Côte
         </label>
       </div>
+
+      <!-- Ajout des cases à cocher pour les types de documents -->
+      <div class="checkbox-container">
+        <label>
+          <input type="checkbox" v-model="selectedDocumentTypes" value="livre">
+          Livres
+        </label>
+        <label>
+          <input type="checkbox" v-model="selectedDocumentTypes" value="journal">
+          Journaux
+        </label>
+        <label>
+          <input type="checkbox" v-model="selectedDocumentTypes" value="cdrom">
+          CD-ROM
+        </label>
+        <label>
+          <input type="checkbox" v-model="selectedDocumentTypes" value="microfilm">
+          Microfilms
+        </label>
+      </div>
       
 
       <!-- Section pour afficher la liste des livres -->
       <div class="doc-container">
-        <div v-for="doc in allDocuments" :key="doc.id" class="doc-frame">
+        <div v-for="doc in filteredDocuments" :key="doc.id" class="doc-frame">
           <p>Type du document : {{ getDocumentType(doc.type) }}</p>
           <!-- Utilisation d'une expression pour construire le chemin complet -->
           <img :src="doc.chemin_image" alt="Image du document" class="doc-image" />
@@ -49,8 +69,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
+
+const allDocuments = ref([]);
+const filteredDocuments = ref([]);
+const selectedSortingCriteria = ref('titre');
+const selectedDocumentTypes = ref([]);
 
 const sortByTitle = (a, b) => {
   const titleA = a.titre.toUpperCase();
@@ -66,20 +91,27 @@ const sortByCote = (a, b) => {
   return coteA - coteB;
 };
 
-const selectedSortingCriteria = ref('titre');
-
 const sortByTitre = () => {
   selectedSortingCriteria.value = 'titre';
   allDocuments.value.sort(sortByTitle);
+  applyFiltering();
 };
 
 const sortByCote2 = () => {
   selectedSortingCriteria.value = 'cote';
   allDocuments.value.sort(sortByCote);
+  applyFiltering();
 };
 
 
-const allDocuments = ref([]);
+const applyFiltering = () => {
+  // Filtrer les documents en fonction des types sélectionnés
+  filteredDocuments.value = allDocuments.value.filter(doc => selectedDocumentTypes.value.includes(doc.type));
+};
+
+watch(selectedDocumentTypes, () => {
+  applyFiltering(); // Mettre à jour les documents filtrés lorsqu'il y a un changement dans les types de documents sélectionnés
+});
 
 
 const fetchAllDocuments = async () => {
