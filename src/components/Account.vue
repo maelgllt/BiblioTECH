@@ -1,11 +1,15 @@
 <template>
   <main class="about-page">
-    <h1>Compte</h1>
+    <div class="titre">
+      <img src="../../public/favicon.ico" alt="Logo" class="logo"/>
+      <h1>BiblioTech : l'outil de gestion de la médiathèque de la ville de Saint-Barthélemy-d'Anjou</h1>
+    </div>
+    <h2>Compte</h2>
 
     <div class="forms">
       <!-- Formulaire de Connexion -->
       <div class="login-form">
-        <h2>Connexion</h2>
+        <h3>Connexion</h3>
         <form @submit.prevent="login">
           <input type="text" id="loginUsername" v-model="loginUsername" placeholder="Nom d'utilisateur" required />
 
@@ -20,7 +24,7 @@
 
       <!-- Formulaire d'Inscription -->
       <div class="signup-form">
-        <h2>Inscription</h2>
+        <h3>Inscription</h3>
         <form @submit.prevent="signup">
           <input type="text" id="signupNom" v-model="signupNom" placeholder="Nom" required />
 
@@ -152,12 +156,22 @@ const isPasswordValid = computed(() => {
 
 <style lang="scss">
 .about-page {
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
+  .titre{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5%;
+
+  .logo{
+    margin-right: 5%;
   }
+}
 
   h2{
+    text-align: center;
+  }
+
+  h3{
     text-align: center;
   }
 

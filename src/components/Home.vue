@@ -1,24 +1,49 @@
 <template>
   <main class="home-page">
     <div>
-      <h1>Bienvenue sur BiblioTech, l'application de gestion de la médiathèque de la ville de Saint-Barthélemy-d'Anjou</h1>
-      <div class="book-container">
-        <div v-for="book in books" :key="book.id" class="book-frame">
+      <div class="titre">
+        <img src="../../favicon.ico" alt="Logo" class="logo"/>
+        <h1>BiblioTech : l'outil de gestion de la médiathèque de la ville de Saint-Barthélemy-d'Anjou</h1>
+      </div>
+
+      <h2>Liste des documents</h2>
+      
+      <div class="toggle-button-container">
+        <label :class="{ active: selectedSortingCriteria === 'titre' }" @click="sortByTitre">
+          <input type="radio" v-model="selectedSortingCriteria" value="titre">
+          Titre
+        </label>
+
+        <label :class="{ active: selectedSortingCriteria === 'cote' }" @click="sortByCote2">
+          <input type="radio" v-model="selectedSortingCriteria" value="cote">
+          Côte
+        </label>
+      </div>
+      
+
+      <!-- Section pour afficher la liste des livres -->
+      <div class="doc-container">
+        <div v-for="doc in allDocuments" :key="doc.id" class="doc-frame">
+          <p>Type du document : {{ getDocumentType(doc.type) }}</p>
           <!-- Utilisation d'une expression pour construire le chemin complet -->
-          <img :src="book.chemin_image" alt="Image du livre" class="book-image" />
-          <div class="book-details">
-            <p class="book-title">
-              <strong>{{ book.titre }}</strong>
+          <img :src="doc.chemin_image" alt="Image du document" class="doc-image" />
+          <div class="doc-details">
+            <p class="doc-title">
+              <strong>{{ doc.titre }}</strong>
             </p>
-            <p class="book-author">
-              <strong>Auteur(s) : </strong> {{ book.auteur }}
+            <p v-if="doc.auteur" class="doc-author">
+              <strong>Auteur(s) : </strong> {{ doc.auteur }}
             </p>
-            <p class="book-id">
-              <strong>Côte : </strong> {{ book.cote_livres }}
+            <p v-if="doc.date" class="doc-date">
+              <strong>Date : </strong> {{ doc.date }}
+            </p>
+            <p class="doc-id">
+              <strong>Côte : </strong> {{ doc.cote }}
             </p>
           </div>
         </div>
       </div>
+
     </div>
   </main>
 </template>
@@ -27,32 +52,143 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-const books = ref([]);
+const sortByTitle = (a, b) => {
+  const titleA = a.titre.toUpperCase();
+  const titleB = b.titre.toUpperCase();
 
-const fetchBooks = async () => {
+  return titleA.localeCompare(titleB);
+};
+
+const sortByCote = (a, b) => {
+  const coteA = parseInt(a.cote, 10) || 0;
+  const coteB = parseInt(b.cote, 10) || 0;
+
+  return coteA - coteB;
+};
+
+const selectedSortingCriteria = ref('titre');
+
+const sortByTitre = () => {
+  selectedSortingCriteria.value = 'titre';
+  allDocuments.value.sort(sortByTitle);
+};
+
+const sortByCote2 = () => {
+  selectedSortingCriteria.value = 'cote';
+  allDocuments.value.sort(sortByCote);
+};
+
+
+const allDocuments = ref([]);
+
+
+const fetchAllDocuments = async () => {
   try {
-    const response = await axios.get('http://localhost/api_BiblioTech.php?table=livres');
-    books.value = response.data;
+    const responseBooks = await axios.get('http://localhost/api_BiblioTech.php?table=livres');
+    const responseJournals = await axios.get('http://localhost/api_BiblioTech.php?table=journaux');
+    const responseCDs = await axios.get('http://localhost/api_BiblioTech.php?table=cdrom');
+    const responseMicrofilms = await axios.get('http://localhost/api_BiblioTech.php?table=microfilms');
+
+    // Fusionner les listes de différents types de documents
+    allDocuments.value = [
+      ...responseBooks.data.map(book => ({ ...book, type: 'livre' })),
+      ...responseJournals.data.map(journal => ({ ...journal, type: 'journal' })),
+      ...responseCDs.data.map(cd => ({ ...cd, type: 'cdrom' })),
+      ...responseMicrofilms.data.map(microfilm => ({ ...microfilm, type: 'microfilm' })),
+    ];
+
+    // Appliquer le tri initial
+    sortByTitre();
   } catch (error) {
-    console.log("Erreur lors de la récupération des données de l'API", error);
+    console.log("Erreur lors de la récupération des données de tous les documents", error);
   }
 };
 
-onMounted(fetchBooks);
+const getDocumentType = (type) => {
+  switch (type) {
+    case 'livre':
+      return 'Livre';
+    case 'journal':
+      return 'Journal';
+    case 'cdrom':
+      return 'CD-ROM';
+    case 'microfilm':
+      return 'Microfilm';
+    default:
+      return 'Inconnu';
+  }
+};
+
+onMounted(fetchAllDocuments);
 </script>
 
 <style lang="scss">
-h1 {
+.titre{
+  display: flex;
+  align-items: center;
   text-align: center;
+  margin-bottom: 5%;
+
+  .logo{
+    margin-right: 5%;
+  }
 }
 
-.book-container {
+h2{
+  text-align: center;
+  margin-bottom: 3%;
+}
+
+.toggle-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px; /* Ajustez la largeur selon vos besoins */
+  margin: 10px auto;
+}
+
+label {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+label:hover {
+  background-color: #3498db;
+}
+
+label.active {
+  background-color: #2980b9;
+  color: white;
+}
+
+.toggle-button-slider {
+  width: 50px; /* Ajustez la largeur selon vos besoins */
+  height: 30px; /* Ajustez la hauteur selon vos besoins */
+  background-color: #ecf0f1;
+  border-radius: 15px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + .toggle-button-slider {
+  transform: translateX(100%);
+}
+
+.doc-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
-.book-frame {
+.doc-frame {
   border: 2px solid #ccc;
   border-radius: 8px;
   margin: 10px;
@@ -62,26 +198,26 @@ h1 {
   box-sizing: border-box;
 }
 
-.book-frame:hover {
+.doc-frame:hover {
   transition: 0.5s;
   border: 2px solid #000000;
   border-radius: 8px;
 }
 
-.book-image {
+.doc-image {
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
   max-height: 350px; /* Taille maximale de l'image en hauteur */
 }
 
-.book-title {
+.doc-title {
   font-size: 150%;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.book-author {
+.doc-author {
   margin: 0;
 }
 

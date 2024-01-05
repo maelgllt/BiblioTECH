@@ -1,35 +1,12 @@
 # BiblioTechVue
 
-This template should help get you started developing with Vue 3 in Vite.
+Bienvenue sur le README de BiblioTech, une application web dédiée à la gestion de la médithèque de la ville de Saint Barthélemy d'Anjou
 
-## Recommended IDE Setup
+## Les composants
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Comme dans tout projet Vue, il y a des fichiers composants. Ici, il y a 4 composants : 
+- Home.vue : c'est la page d'accueil qui contient la liste des documents disponibles dans la médiathèque (livres, journaux, CD-ROM ...)
+- Sidebar.vue : c'est la barre latérale qui se situe sur le côté sur sert de menu de l'application
+- Account.vue : c'est la page de connexion / inscription 
+- About.vue : c'est la page qui clarifie l'objectif du projet
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
