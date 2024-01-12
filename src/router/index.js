@@ -14,6 +14,10 @@ const router = createRouter({
         {
             path: '/compte',
             component: () => import('../components/Account.vue')
+        },
+        {
+            path: '/ajout-doc',
+            component: () => import('../components/Add_doc.vue')
         }
     ]
 })

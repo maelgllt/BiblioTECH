@@ -1,7 +1,7 @@
 <template>
   <main class="about-page">
     <div class="titre">
-      <img src="../../public/favicon.ico" alt="Logo" class="logo"/>
+      <img src="../../favicon.ico" alt="Logo" class="logo"/>
       <h1>BiblioTech : l'outil de gestion de la médiathèque de la ville de Saint-Barthélemy-d'Anjou</h1>
     </div>
     <h2>Compte</h2>

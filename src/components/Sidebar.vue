@@ -20,6 +20,10 @@
                 <span class="material-icons">person</span>
                 <span class="text">Compte</span>
             </router-link>
+            <router-link class="button" to="/ajout-doc">
+                <span class="material-icons">book</span>
+                <span class="text">Ajouter document</span>
+            </router-link>
         </div>
 
         <div class="flex"></div>
