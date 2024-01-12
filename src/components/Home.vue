@@ -40,10 +40,14 @@
         </label>
       </div>
       
+      <!-- Barre de recherche -->
+      <div class="search-bar">
+        <input type="text" v-model="searchQuery" placeholder="Rechercher par titre..." />
+      </div>
 
       <!-- Section pour afficher la liste des livres -->
       <div class="doc-container">
-        <div v-for="doc in filteredDocuments" :key="doc.id" class="doc-frame">
+        <div v-for="doc in filteredResults" :key="doc.id" class="doc-frame">
           <p>Type du document : {{ getDocumentType(doc.type) }}</p>
           <!-- Utilisation d'une expression pour construire le chemin complet -->
           <img :src="doc.chemin_image" alt="Image du document" class="doc-image" />
@@ -63,19 +67,18 @@
           </div>
         </div>
       </div>
-
     </div>
   </main>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios';
 
 const allDocuments = ref([]);
-const filteredDocuments = ref([]);
 const selectedSortingCriteria = ref('titre');
-const selectedDocumentTypes = ref([]);
+const selectedDocumentTypes = ref(['livre', 'journal', 'cdrom', 'microfilm']);
+const searchQuery = ref('');
 
 const sortByTitle = (a, b) => {
   const titleA = a.titre.toUpperCase();
@@ -94,25 +97,12 @@ const sortByCote = (a, b) => {
 const sortByTitre = () => {
   selectedSortingCriteria.value = 'titre';
   allDocuments.value.sort(sortByTitle);
-  applyFiltering();
 };
 
 const sortByCote2 = () => {
   selectedSortingCriteria.value = 'cote';
   allDocuments.value.sort(sortByCote);
-  applyFiltering();
 };
-
-
-const applyFiltering = () => {
-  // Filtrer les documents en fonction des types sélectionnés
-  filteredDocuments.value = allDocuments.value.filter(doc => selectedDocumentTypes.value.includes(doc.type));
-};
-
-watch(selectedDocumentTypes, () => {
-  applyFiltering(); // Mettre à jour les documents filtrés lorsqu'il y a un changement dans les types de documents sélectionnés
-});
-
 
 const fetchAllDocuments = async () => {
   try {
@@ -136,6 +126,8 @@ const fetchAllDocuments = async () => {
   }
 };
 
+onMounted(fetchAllDocuments);
+
 const getDocumentType = (type) => {
   switch (type) {
     case 'livre':
@@ -151,7 +143,23 @@ const getDocumentType = (type) => {
   }
 };
 
-onMounted(fetchAllDocuments);
+const filteredResults = computed(() => {
+  const searchLowerCase = searchQuery.value.trim().toLowerCase();
+
+  if (searchQuery.value.trim().length === 0) {
+    return allDocuments.value.filter(doc => selectedDocumentTypes.value.includes(doc.type));
+  }
+
+  return allDocuments.value.filter(doc => {
+    const titleLowerCase = doc.titre.toLowerCase();
+    const matchesSearch = titleLowerCase.startsWith(searchLowerCase);
+    const matchesType = selectedDocumentTypes.value.includes(doc.type);
+
+    return matchesSearch && matchesType;
+  });
+});
+
+
 </script>
 
 <style lang="scss">
@@ -177,6 +185,18 @@ h2{
   justify-content: space-between;
   width: 200px; /* Ajustez la largeur selon vos besoins */
   margin: 10px auto;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 25%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 label {
