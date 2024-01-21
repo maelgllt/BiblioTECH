@@ -45,7 +45,7 @@ const showDateField = ref(false);
 const apiResponse = ref("");
 
 const handleDocTypeChange = () => {
-  // Afficher ou masquer les champs en fonction du type de document sélectionné
+  // Affiche ou masque les champs en fonction du type de document sélectionné
   showAuthorField.value = docType.value === "Livre" || docType.value === "CD-ROM";
   showDateField.value = docType.value === "Journal" || docType.value === "Microfilms";
 };

@@ -8,6 +8,7 @@
 
       <h2>Liste des documents</h2>
       
+      <!-- Tri par titre ou par côte -->
       <div class="toggle-button-container">
         <label :class="{ active: selectedSortingCriteria === 'titre' }" @click="sortByTitre">
           <input type="radio" v-model="selectedSortingCriteria" value="titre">
@@ -20,7 +21,7 @@
         </label>
       </div>
 
-      <!-- Ajout des cases à cocher pour les types de documents -->
+      <!-- Cases à cocher pour le tri par type de documents -->
       <div class="checkbox-container">
         <label>
           <input type="checkbox" v-model="selectedDocumentTypes" value="livre">
@@ -45,7 +46,7 @@
         <input type="text" v-model="searchQuery" placeholder="Rechercher par titre..." />
       </div>
 
-      <!-- Section pour afficher la liste des livres -->
+      <!-- Section pour afficher la liste des documents -->
       <div class="doc-container">
         <div v-for="doc in filteredResults" :key="doc.id" class="doc-frame">
           <p>Type du document : {{ getDocumentType(doc.type) }}</p>
@@ -72,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 const allDocuments = ref([]);
@@ -111,7 +112,7 @@ const fetchAllDocuments = async () => {
     const responseCDs = await axios.get('http://localhost/api_BiblioTech.php?table=cdrom');
     const responseMicrofilms = await axios.get('http://localhost/api_BiblioTech.php?table=microfilms');
 
-    // Fusionner les listes de différents types de documents
+    // Fusion des listes des différents types de documents
     allDocuments.value = [
       ...responseBooks.data.map(book => ({ ...book, type: 'livre' })),
       ...responseJournals.data.map(journal => ({ ...journal, type: 'journal' })),
@@ -119,7 +120,7 @@ const fetchAllDocuments = async () => {
       ...responseMicrofilms.data.map(microfilm => ({ ...microfilm, type: 'microfilm' })),
     ];
 
-    // Appliquer le tri initial
+    // Tri initial
     sortByTitre();
   } catch (error) {
     console.log("Erreur lors de la récupération des données de tous les documents", error);
@@ -183,7 +184,7 @@ h2{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px; /* Ajustez la largeur selon vos besoins */
+  width: 200px; 
   margin: 10px auto;
 }
 
@@ -218,8 +219,8 @@ label.active {
 }
 
 .toggle-button-slider {
-  width: 50px; /* Ajustez la largeur selon vos besoins */
-  height: 30px; /* Ajustez la hauteur selon vos besoins */
+  width: 50px; 
+  height: 30px; 
   background-color: #ecf0f1;
   border-radius: 15px;
   position: relative;
@@ -260,7 +261,7 @@ input[type="radio"]:checked + .toggle-button-slider {
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
-  max-height: 350px; /* Taille maximale de l'image en hauteur */
+  max-height: 350px; 
 }
 
 .doc-title {

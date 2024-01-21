@@ -34,7 +34,7 @@
                 <span class="text">À propos</span>
             </router-link>
 
-            <!-- Partie settings à faire à la fin s'il reste du temps-->
+            <!-- Partie settings à faire à la fin s'il reste du temps -->
             <!-- 
             <router-link class="button" to="/paramètres">
                 <span class="material-icons">settings</span>

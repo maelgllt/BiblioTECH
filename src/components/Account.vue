@@ -101,7 +101,6 @@ const login = async () => {
     }
   } catch (error) {
     console.log('Erreur lors de la connexion', error);
-    // Ajoutez ici la logique pour gérer l'erreur après une tentative de connexion infructueuse
   }
 };
 
@@ -109,9 +108,9 @@ const signup = async () => {
 
   signupClicked.value = true;  
 
-  // Valider le mot de passe seulement si la propriété calculée isPasswordValid est vraie
+  // Valide le mot de passe seulement si la propriété calculée isPasswordValid est vraie
   if (!isPasswordValid.value) {
-    return; // Arrêtez l'exécution si la validation échoue
+    return; // Arrêt de l'exécution si la validation échoue
   }
 
   const userData = {
