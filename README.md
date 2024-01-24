@@ -3,7 +3,7 @@
 Bienvenue sur le README de BiblioTech, une application web dédiée à la gestion de la médiathèque de la ville de Saint Barthélemy d'Anjou. 
 
 > [!NOTE]
-> Cette application ne constitue qu'une simulation et ne sera pas réellement intégrée à la médiathèque de Saint Barthélemy d'Anjou. Ce projet à été réalisé par moi-même dans la cadre de ma 3ème année des formation à l'ESAIP. C'est dans le cadre de ce projet que j'ai pu acquérir des compétences spécifiques liées à Vue.js.
+> Cette application ne constitue qu'une simulation et ne sera pas réellement intégrée à la médiathèque de Saint Barthélemy d'Anjou. Ce projet à été réalisé par moi-même dans la cadre de ma 3ème année de formation à l'ESAIP. C'est dans le cadre de ce projet que j'ai pu acquérir des compétences spécifiques liées à Vue.js.
 
 ## Les composants
 
@@ -15,10 +15,10 @@ Pour faciliter la recherche de l'utilisateur, un système de filtrage des docume
 - Ensuite, il peut choisir d'afficher que certaines catégories de documents à l'aide de checkbox. 
 - Enfin, une barre de recherche permet à l'utilisateur d'entrer le titre du document qu'il recherche.  
 
-Ces filtres sont complémentaires : par exemple, si l'utilisateur souhaite rechercher Avatar, il peut utiliser la barre de recherche et l'application ressortira la liste triée par titre ou par côte ainsi que les différents types de documents existant à ce nom.
+Ces filtres sont complémentaires : par exemple, si l'utilisateur souhaite rechercher "Avatar", il peut utiliser la barre de recherche et l'application ressortira la liste triée par titre ou par côte ainsi que les différents types de documents existant à ce nom.
 
 ### Sidebar.vue
-C'est la barre latérale qui se situe sur le côté qui sert de menu pour l'application. Elle permet d'accéder aux différents composants. A la base pensée pour être compatible sur mobile, le menu peut se réduire pour n'afficher que les icônes.
+C'est la barre latérale qui se situe sur le côté qui sert de menu pour l'application. Elle permet d'accéder aux différents composants. A la base pensé pour être compatible sur mobile, le menu peut se réduire pour n'afficher que les icônes.
 
 ### Account.vue
 C'est la page de connexion / inscription. Le système d'inscription est sécurisé (format de l'email vérifié, mot de passe complexe, confirmation de mot de passe...).
