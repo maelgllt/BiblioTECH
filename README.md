@@ -33,3 +33,7 @@ C'est la page qui clarifie l'objectif du projet.
 
 Pour gérer les redirections vers les différents composants Vue, il a fallu configurer des routes. Pour cela, j'ai utilisé VueRouter. Voir [index.js](src/router/index.js).
 
+## Côté Back
+
+J'utilise XAMPP avec Apache et MySQL pour ce projet. J'ai donc également un fichier PHP côté serveur pour gérer les données de ma base.
+
