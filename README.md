@@ -31,5 +31,5 @@ C'est la page qui clarifie l'objectif du projet.
 
 ## Les routes
 
-Pour gérer les redirections vers les différents composants Vue, il a fallu configurer des routes. Pour cela, j'ai utiliser VueRouter. Voir [index.js](src/router/index.js).
+Pour gérer les redirections vers les différents composants Vue, il a fallu configurer des routes. Pour cela, j'ai utilisé VueRouter. Voir [index.js](src/router/index.js).
 
